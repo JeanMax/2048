@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 05:02:37 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/28 20:20:01 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/02/28 22:04:06 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@
 # define WBORDER 9
 # define WREFR 10
 # define DELWIN 11
+# define RED "\033[30;01m1"
+# define GREEN "\033[30;01m2"
+# define YELLOW "\033[30;01m3"
+# define BLUE "\033[30;01m4"
+# define PURPLE "\033[30;01m5"
+# define CYAN "\033[30;01m6"
+# define WHITE "\033[30;01m7" //bolded one!
+# define NOCOLOR "033[0m"
 # define DEBUG { ft_putstr_clr(__func__, "r"); ft_putstr_clr(" (", "r"); ft_putstr_clr(__FILE__, "red"); ft_putstr_clr(") - line: ", "r"); ft_putnbr_clr(__LINE__, "r"); ft_putendl(""); } //debug
 
 /*
@@ -69,6 +77,7 @@ struct		s_env
 /*
 ** prototypes
 */
+int				rand_a_b(int a, int b, int seed);
 void			error(char error, char *msg);
 void			sig_init(void);
 int				get_key(void);

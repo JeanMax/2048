@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 04:50:46 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/28 13:24:59 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/02/28 20:52:45 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,192 +14,209 @@
 ** this is the main :P
 */
 
-/*
-                The screen (stdscr)
-        (0,0)*----------------------------------* (0, ??-1)
-             |                                  |
-             |                                  |
-             |    (??,??)                       |
-             |      ---------------             |
-             |      |             |             |
-             |      |             |             |
-             |      |     win     |LINES        |
-             |      |             |             |
-             |      |             |             |
-             |      |             |             |
-             |      ---------------             |
-             |          COLS                    |
-             |                                  |
-             *----------------------------------*
-       (??-1, 0)                              (??-1, ??-1) 
-
-it would be nice to find the size of the screen in printable char
-->depends on the police
-
-max size with police 2 and full screen:
-478/2550
-*/
-
 #include "header.h"
 
-static void		init_num_tab(t_env *e)
+static int		**init_num_tab(int grid_size)
 {
 	int			**tab;
 	int			i;
 	int			j;
 
-	if (!(tab = (int **)malloc(sizeof(int *) * (SIZE_Y + 1))))
+	if (!(tab = (int **)malloc(sizeof(int *) * (grid_size + 1))))
 		error(MALLOC, "num_tab_Y");
 	i = 0;
-	while (i <= SIZE_Y)
+	while (i <= grid_size)
 	{
-		if (!(tab[i] = (int *)malloc(sizeof(int) * (SIZE_X + 1))))
+		if (!(tab[i] = (int *)malloc(sizeof(int) * (grid_size + 1))))
 			error(MALLOC, "num_tab_X");
 		i++;
 	}
 	i = 0;
-	while (i < SIZE_Y)
+	while (i < grid_size)
 	{
 		j = 0;
-		while (j < SIZE_X)
+		while (j < grid_size)
 			tab[i][j++] = EMPTY; //filled with '1' if it's not a num we'll print
-		tab[i][SIZE_X] = 0; //segfault preventing
+		tab[i][grid_size] = 0; //segfault preventing
 		i++;
 	}
-	tab[SIZE_Y] = NULL;  //segfault preventing
-	e->num = tab;
-	
+	tab[grid_size] = NULL;	//segfault preventing
 //you can now use the int **tab as a char **tab! watch and see
-/*	
+/*
 	i = 0;
 	j = 0;
 	while (tab[i])
 	{
-		j = 0;
-		while (tab[i][j])
-			ft_debugnbr("num", tab[i][j++]);
-		ft_putendl("");
-		i++;
+	j = 0;
+	while (tab[i][j])
+	ft_debugnbr("num", tab[i][j++]);
+	ft_putendl("");
+	i++;
 	}
 	exit(0);
 */
+	return (tab);
 }
-/*
-static void		init_scr_tab(t_env *e)
-{
-	char		**tab;
-	int			i;
-	int			j;
 
-	if (!(tab = (char **)malloc(sizeof(char *) * (MAX_Y + 1))))
-		error(MALLOC, "scr_tab_Y");
+static WINDOW	***init_win_tab(int grid_size)
+{
+	WINDOW		***tab;
+	int			i;
+
+	if (!(tab = malloc(sizeof(WINDOW **) * (grid_size + 1))))
+		error(MALLOC, "win_tab_Y");
 	i = 0;
-	while (i <= MAX_Y)
+	while (i <= grid_size)
 	{
-		if (!(tab[i] = (char *)malloc(sizeof(char) * (MAX_X + 1))))
-			error(MALLOC, "scr_tab_X");
+		if (!(tab[i] = malloc(sizeof(WINDOW *) * (grid_size + 1))))
+			error(MALLOC, "win_tab_X");
 		i++;
 	}
 	i = 0;
-	while (i < MAX_Y)
+	while (i < grid_size)
 	{
-		j = 0;
-		while (j < MAX_X)
-			tab[i][j++] = ' '; //default filled with space
-		tab[i][MAX_X] = '\0'; //segfault preventing
+		tab[i][grid_size] = NULL; //segfault preventing
 		i++;
 	}
-	tab[MAX_Y] = NULL;  //segfault preventing
-	e->scr = tab;
+	tab[grid_size] = NULL;	//segfault preventing
+	return (tab);
 }
 
-static void		edit_scr_size(t_env *e)
+static void		init_win(t_env *e, char destroy)
 {
 	int			i;
 	int			j;
-	
-	i = 0;
-	while (i < LINES)
+	int			stop_i;
+	int			stop_j;
+
+	stop_i = COLS - (COLS % e->grid_size);
+	stop_j = LINES - (LINES % e->grid_size) - 1;
+	i = -1;
+	if (destroy)
 	{
-		j = 0;
-		while (j < COLS)
+		while (++i < e->grid_size)
 		{
-			if (!i || !j || i == LINES - 1 || j == COLS - 1)
-				e->scr[i][j] = 'X'; //border
-			else
-				e->scr[i][j] = 'z'; //default filled with space
-			j++;
+			j = -1;
+			while (++j < e->grid_size)
+			{
+				if ((wborder(e->win[i][j], ' ', ' ', ' ',' ',' ',' ',' ',' ')) == ERR)
+					error(WBORDER, NULL);
+				if ((wclear(e->win[i][j])) == ERR)
+					error(WCLEAR, NULL);
+				if ((delwin(e->win[i][j])) == ERR)
+					error(DELWIN, NULL);
+			}
 		}
-		e->scr[i][j] = 'X'; //bottom right corner
-		e->scr[i][COLS] = '\0'; //segfault preventing
-		i++;
+		if ((wborder(e->win_score, ' ', ' ', ' ',' ',' ',' ',' ',' ')) == ERR)
+			error(WBORDER, NULL);
+		if ((wclear(e->win_score)) == ERR)
+			error(WCLEAR, NULL);
+		if ((delwin(e->win_score)) == ERR)
+			error(DELWIN, NULL);
 	}
-	e->scr[LINES] = NULL;  //segfault preventing
-}
-*/
-static void		init_win(t_env *e)
-{
-	if (!(e->win = newwin(LINES - 1, COLS - 1, 0, 0)))
+	i = -1;
+	clear();
+	if (!(e->win_score = newwin(3, stop_i - 4, LINES - 3,	2)))
 		error(NEW_WIN, NULL);
-	wborder(e->win, '|', '|', '-', '-', '+', '+', '+', '+'); //draw border...
-	wrefresh(e->win);
+	while (++i < e->grid_size)
+	{
+		j = -1;
+		while (++j < e->grid_size)
+			if (!(e->win[i][j] = newwin(stop_j / e->grid_size,\
+										stop_i / e->grid_size,\
+										j * (stop_j / e->grid_size - 1),\
+										i * (stop_i / e->grid_size - 1))))
+				error(NEW_WIN, NULL);
+	}
+	refresh();
 }
 
 static void		init(t_env *e)
 {
+	int		key;
+
 //sig_init();
 	initscr();
 	cbreak(); //one char at a time
 	keypad(stdscr, TRUE); // keyboard mapping
 	noecho(); //suppress the automatic echoing of typed characters
-	keypad(stdscr, TRUE); //allow arrow keys capture
-//	getmaxyx(stdscr, e->y_max, e->x_max); //update y/x with COLS/LINES... useless?
-	init_num_tab(e);
-//	init_scr_tab(e);
-//	edit_scr_size(e);
-	printw("Press Esc to exit."); //print something in the win-buffer
-	mvprintw(3, 5, "ZBOUB"); //	move to (3,5) and print zboub!
-	printw("\nBOOBZ"); //print at the new cursor position
-	refresh(); //print the win-buffer to terminal... right now win is the screen
-	e->old_win_x = COLS;
-	e->old_win_y = LINES;
+	e->score = 0;
+	e->win_score = malloc(sizeof(WINDOW *));
+	while (42)
+	{
+		printw("Press Esc at anytime to exit.\n\n");
+		key = 2;
+		while (key < 10)
+			printw("Press %d to play in %dx%d.\n", key, key, key), key++;
+		refresh();
+		key = get_key();
+		if (key >= 50 && key <= 57)
+		{
+			e->grid_size = key - 48;
+			clear();
+			break ;
+		}
+		clear();
+	}
+	e->num = init_num_tab(e->grid_size);
+	e->old_num = init_num_tab(e->grid_size);
+	e->win = init_win_tab(e->grid_size);
+	init_win(e, 0);
+}
+
+static void		print_nb(int nb, WINDOW *win)
+{
+	int		x;
+	int		y;
+	int		size;
+	int		tmp;
+
+	if (nb == EMPTY)
+		return ;
+	tmp = nb;
+	size = 1;
+	while (tmp /= 10)
+		size++;
+	getmaxyx(win, y, x);
+	mvwprintw(win, y / 2, x / 2 - size / 2, "%d", nb + 2048);
+}
+
+static void		draw_win(t_env *e)
+{
+	int		 i;
+	int		 j;
+
+	i = -1;
+	while (j = -1, e->win[++i])
+		while (e->win[i][++j])
+		{
+			if ((wclear(e->win[i][j])) == ERR)
+				error(WCLEAR, NULL);
+			if ((wborder(e->win[i][j], '|', '|', '-', '-', '+', '+', '+', '+'))\
+				== ERR)
+				error(WBORDER, NULL);
+			print_nb(e->num[i][j], e->win[i][j]);
+			if ((wrefresh(e->win[i][j])) == ERR)
+				error(WREFR, NULL);
+		}
+	if ((wclear(e->win_score)) == ERR)
+		error(WCLEAR, NULL);
+	if ((wborder(e->win_score, '|', '|', '~', '~', 'o', 'o', 'o', 'o')) == ERR)
+		error(WBORDER, NULL);
+	mvwprintw(e->win_score, 1, COLS / 2 - 5, "Score: %d", e->score);
+	if ((wrefresh(e->win_score)) == ERR)
+		error(WREFR, NULL);
+	refresh();
 }
 
 int				main(int ac, char **av)
 {
 	t_env		e;
 
-	if (ac != 1)
-		error(USAGE, av[0]);
+	ac != 1 ? error(USAGE, av[0]) : NULL;
 	init(&e);
-
-	//debug
-	int key;
-//	int i;
-	get_key();
-	init_win(&e);
 	while (42)
-	{
-//		getmaxyx(e.win, e.y_max, e.x_max); //update win size if term resized
-		if (!(key = get_key())) //will pause the loop till a key is pressed
-			continue ;
-		if (e.old_win_x != COLS || e.old_win_y != LINES)
-			wresize(e.win, LINES, COLS);
-//		clear();
-//		edit_scr_size(&e);
-//		i = 0;
-//		while (e.scr[i])
-//			printw("%s", e.scr[i++]);
-		wprintw(e.win, "\n key %d\n", key);
-		wprintw(e.win," LINES %d\n", LINES);
-		wprintw(e.win," COLS %d\n", COLS);
-		wrefresh(e.win);
-		e.old_win_x = COLS;
-		e.old_win_y = LINES;
-	}
- //debug
-
-	ft_freestab((void *)e.scr); //won't happen, but swag
+		init_win(&e, 42), draw_win(&e), get_key();
 	ft_freestab((void *)e.num); //won't happen, but swag
 	endwin();
 	return (0);

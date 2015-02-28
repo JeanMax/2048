@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 19:39:48 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/28 13:19:18 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/02/28 19:33:05 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,13 @@ void		error(char error, char *msg)
 		failn("Window outside screen.");
 	else if (error == NEW_WIN)
 		failn("Creating new window failed.");
+	else if (error == WCLEAR)
+		failn("Wclear failed.");
+	else if (error == WBORDER)
+		failn("Wborder failed.");
+	else if (error == WREFR)
+		failn("Wrefresh failed.");
+	else if (error == DELWIN)
+		failn("Delwin failed.");
 	exit(-1);
 }

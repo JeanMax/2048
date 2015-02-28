@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/11 20:13:58 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/28 05:54:07 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/02/28 08:46:57 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,13 @@ static void			sig_handler(int sig)
 		error(SEG, NULL);
 	else if (sig == SIGFPE)
 		error (FPE, NULL);
-	else if (sig == SIGINT)
-		ft_putstr("\b \b\b \b\n");
-	else if (sig == 29)
-		ft_putstr(""); //?
 }
 
 void				sig_init(void)
 {
-	signal(SIGINT, sig_handler);
+//	signal(SIGINT, sig_handler);
 	signal(SIGFPE, sig_handler);
-	signal(29, sig_handler); //SIGINFO
+//	signal(29, sig_handler); //SIGINFO
 	signal(SIGSEGV, sig_handler);
 	signal(SIGBUS, sig_handler);
 	signal(SIGTSTP, SIG_IGN);

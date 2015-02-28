@@ -6,7 +6,7 @@
 /*   By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/03 14:13:23 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/25 01:53:46 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/02/28 10:49:24 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	ft_lclean(t_lst **alst);
 */
 void	ft_bzero(void *s, size_t n);
 char	**ft_cpystab(char **tab, char *val);
-void	ft_freestab(char **tab);
+void	ft_freestab(void **tab);
 void	ft_memdel(void **ap);
 void	*ft_memalloc(size_t size);
 void	*ft_memccpy(void *dest, const void *src, int c, size_t n);

@@ -6,7 +6,7 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2015/02/28 06:59:16 by mcanal           ###   ########.fr        #
+#    Updated: 2015/02/28 10:52:22 by mcanal           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -16,13 +16,13 @@ O_DIR =	obj
 VPATH =	src
 SRCC = 	$(C_SRC:%.c=src/%.c)
 SRCO =	$(C_SRC:%.c=$(O_DIR)/%.o)
-LIB =	libft/libft.a /usr/lib64/libncurses.a
+LIB =	libft/libft.a
 INC =	inc/header.h
 CC =	gcc
 RM =	rm -f
-CFLAGS = -Wall -Werror -Wextra -I./inc/ -I/usr/include/ -lncurses
+CFLAGS = -lncurses -Wall -Werror -Wextra -I./inc/
 
-.PHONY: all lib soft clean fclean zclean re
+.PHONY: all lib soft clean fclean zclean re brute
 
 all: 
 	@make -C libft
@@ -33,12 +33,11 @@ $(NAME): $(SRCO) $(LIB) $(INC)
 
 $(O_DIR)/%.o: %.c
 	@$(RM) $(NAME)
-	$(CC) $(CFLAGS) $(LIB) -c $^ -o $@
+	$(CC) $(CFLAGS) -c $^ -o $@
 
 soft:
 	@$(RM) $(NAME)
-	@$(CC) -I./inc/ $(SRCC) $(LIB) -o $(NAME)
-	@./$(NAME)
+	@$(CC) -lncurses -I./inc/ $(SRCC) $(LIB) -o $(NAME)
 
 clean:
 	@$(RM) $(SRCO)
@@ -51,3 +50,4 @@ zclean: fclean
 
 re: fclean all
 
+brute: zclean all

@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 19:39:48 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/28 05:32:16 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/02/28 13:19:18 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 void		error(char error, char *msg)
 {
+	endwin();
 	if (error == USAGE)
 		fail("Usage: "), fail(msg), failn(USAGE_MSG);
 	else if (error == MALLOC)
@@ -30,5 +31,7 @@ void		error(char error, char *msg)
 		failn("Floating point exception.");
 	else if (error == WIN_LOC)
 		failn("Window outside screen.");
+	else if (error == NEW_WIN)
+		failn("Creating new window failed.");
 	exit(-1);
 }

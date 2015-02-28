@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 04:50:46 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/28 05:52:01 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/02/28 07:10:18 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void		init(void)
 int				main(int ac, char **av)
 {
 //	t_env		e; //TODO
+
 	if (ac != 1)
 		error(USAGE, av[0]);
 	init();
@@ -62,6 +63,7 @@ int				main(int ac, char **av)
  //debug
 	while (42)
 	{
+		ft_debugnbr("key", get_key());
 		ft_debugnbr("LINES", LINES);
 		ft_debugnbr("COLUMNS", COLUMNS);
 		ft_debugnbr("x0", x0);

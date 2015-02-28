@@ -6,19 +6,8 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 05:02:37 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/28 06:16:36 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/02/28 07:09:13 by mcanal           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-/* ************************************************************************** */
-/*																			*/
-/*														:::		::::::::	*/
-/*	header.h											:+:		:+:	:+:	*/
-/*													+:+ +:+		 +:+	 */
-/*	By: mcanal <mcanal@student.42.fr>				+#+	+:+		+#+		*/
-/*												+#+#+#+#+#+	+#+			*/
-/*	Created: 2014/11/29 13:23:15 by mcanal			#+#	#+#			 */
-/*	Updated: 2015/02/28 05:01:34 by mcanal			###	########.fr		*/
-/*																			*/
 /* ************************************************************************** */
 
 #ifndef HEADER_H
@@ -29,6 +18,7 @@
 # define HEADER_H
 //# define TRUE 1 //already defined in curses.h ?
 //# define FALSE 0 //already defined in curses.h ?
+# define KEY_ESC 27
 # define USAGE_MSG "." //crazy stuff, hum?
 # define USAGE 0
 # define MALLOC 1
@@ -71,5 +61,6 @@ struct		s_env
 */
 void			error(char error, char *msg);
 void			sig_init(void);
+int				get_key(void);
 
 #endif

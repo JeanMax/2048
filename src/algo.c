@@ -6,7 +6,7 @@
 /*   By: tpayet <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/01 09:17:31 by tpayet            #+#    #+#             */
-/*   Updated: 2015/03/01 14:25:31 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 15:34:21 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void		bourre_a_gauche(int *line, int size)
 	while (n < size)
 	{
 		j = 0;
-		while (line[j + 1] != 0)
+		while (line[j + 1])
 		{
 			if (line[j] == EMPTY && line[j + 1] != EMPTY)
 			{
@@ -43,7 +43,7 @@ static void		add_a_gauche(int *line, t_env *e)
 	int		j;
 
 	j = 0;
-	while (line[j + 1] <= e->grid_size)
+	while (j + 1 <= e->grid_size)
 	{
 		if (line[j] == line[j + 1] && line[j] % 2 == 0)
 		{
@@ -238,13 +238,13 @@ int				two_or_four(void)
 	return (i);
 }
 
-void			pop_rand_num(t_env *e, int n)
+void			pop_rand_num(t_env *e, int n, int seed)
 {
 	unsigned int	k;
 	int				i;
 	int				j;
 
-	k = rand_a_b(1, ((e->grid_size) * (e->grid_size)) + 1, 974);
+	k = rand_a_b(1, ((e->grid_size) * (e->grid_size)) + 1, seed);
 	if ((i = ((k + e->grid_size) % e->grid_size) - 1) < 0)
 		i = 0;
 	j = ((k - 1) / e->grid_size);
@@ -265,7 +265,7 @@ void			pop_rand_num(t_env *e, int n)
 	e->num[j][i] = n;
 }
 
-int			is_tab_full(t_env *e)
+static int			is_tab_full(t_env *e)
 {
 	int		i;
 	int		j;
@@ -291,16 +291,25 @@ int				game_over(t_env *e)
 	int j;
 
 	i = 0;
+	if (!is_tab_full(e))
+		return (0);
 	while (e->num[i + 1])
 	{
 		j = 0;
 		while (e->num[i][j + 1])
 		{
-			if (e->num[i][j] == e->num[i][j + 1] || e->num[i][j] == e->num[i + 1][j])
+			if (e->num[i][j] == e->num[i][j + 1] || \
+				e->num[i][j] == e->num[i + 1][j])
 				return (0);
+			j++;
 		}
 		i++;
 	}
+	i = e->grid_size - 1;
+	j = i;
+	if (e->num[i][j] == e->num[i][j - 1] || \
+		e->num[i][j] == e->num[i - 1][j])
+		return (0);
 	return (1);
 }
 
@@ -315,5 +324,5 @@ void			make_ur_move(t_env *e, int key)
 	else if (key == KEY_RIGHT)
 		move_right(e);
 	if (!is_tab_full(e))
-		pop_rand_num(e, two_or_four());
+		pop_rand_num(e, two_or_four(), 3);
 }

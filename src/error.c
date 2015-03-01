@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 19:39:48 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 14:14:34 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 14:54:55 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static void	aux_error(char error, char *msg)
 		failn("Delwin failed.");
 	else if (error == ENUM)
 		failn("Invalid WIN_VALUE.");
+	else if (error == COLOR)
+		failn("Your terminal does not support color.");
 	msg = msg;
 }
 

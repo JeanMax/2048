@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 04:50:46 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 14:25:45 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 15:26:13 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,18 @@ static void		init(t_env *e)
 	check_enum(WIN_VALUE);
 	sig_init();
 	initscr();
+	if (has_colors() == FALSE)
+		error(COLOR, NULL);
+	start_color();
+	init_color(COLOR_BLUE, 956, 529, 529); //rouge
+	init_color(COLOR_MAGENTA, 1000, 974, 533); //jaune
+	init_color(COLOR_CYAN, 416, 965, 686); //vert
+	init_pair(1, COLOR_BLACK, COLOR_RED);
+	init_pair(2, COLOR_BLACK, COLOR_YELLOW);
+	init_pair(3, COLOR_BLACK, COLOR_GREEN);
+	init_pair(4, COLOR_RED, COLOR_BLUE);
+	init_pair(5, COLOR_YELLOW, COLOR_MAGENTA);
+	init_pair(6, COLOR_GREEN, COLOR_CYAN);
 	cbreak();
 	keypad(stdscr, TRUE);
 	noecho();
@@ -104,8 +116,8 @@ static void		init(t_env *e)
 	e->num = init_num_tab(e->grid_size);
 	e->win = init_win_tab(e->grid_size);
 	refresh_win(e, 0);
-	pop_rand_num(e, 2);
-	pop_rand_num(e, two_or_four());
+	pop_rand_num(e, 2, 5);
+	pop_rand_num(e, two_or_four(), 4);
 }
 
 int				main(int ac, char **av)
@@ -123,12 +135,12 @@ int				main(int ac, char **av)
 		if ((key != KEY_DOWN && key != KEY_RIGHT && \
 			key != KEY_UP && key != KEY_LEFT))
 			continue ;
-		make_ur_move(&e, key);
-		if (game_over(&e) && is_tab_full(&e))
+		if (game_over(&e))
 			break;
+		make_ur_move(&e, key);
 	}
 	clear(), mvprintw(LINES / 2, COLS / 2 - 8,  ">< Game Over ><"), refresh();
-	check_enum(2147483648);
+	get_key();
 	ft_freestab((void *)e.num); //won't happen, but swag
 	endwin();
 	return (0);

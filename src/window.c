@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/01 09:16:56 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 15:25:06 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 16:42:49 by tpayet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,7 @@ int				refresh_win(t_env *e, char clear)
 		check_enum(2147483648);
 		return (0);
 	}
-	clear ? clear_win(e) : NULL, clear(), i = -1;
-	wbkgd(stdscr, COLOR_PAIR(5));
+	clear ? clear_win(e) : NULL, clear(), i = -1, wbkgd(stdscr, COLOR_PAIR(5));
 	if (!(e->win_score = newwin(3, stop_i_j[0] - 4, LINES - 3, 2)))
 		error(NEW_WIN, NULL);
 	while (j = -1, ++i < e->grid_size)

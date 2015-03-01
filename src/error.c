@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 19:39:48 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 12:57:34 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 13:38:13 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,9 @@
 
 #include "header.h"
 
-int			check_size(t_env *e)
+int			check_size(int y, int x)
 {
-	int		x;
-	int		y;
-	
-	getmaxyx(e->win[0][0], y, x);
-	if (y < 3 || x < 7)
+	if (y < 3 || x < 6)
 		return (0);
 	return (1);
 }

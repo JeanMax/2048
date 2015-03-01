@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 05:02:37 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 12:53:46 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 13:28:11 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ struct			s_env
 /*
 ** prototypes
 */
-void			refresh_win(t_env *e, char clear);
+int				refresh_win(t_env *e, char clear);
 int				two_or_four(void);
 void			pop_rand_num(t_env *e, int n);
 void			make_ur_move(t_env *e, int key);
 int				rand_a_b(int a, int b, int seed);
-int				check_size(t_env *e);
+int				check_size(int y, int x);
 void			check_enum(void);
 void			error(char error, char *msg);
 void			sig_init(void);

@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 04:50:46 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 12:57:10 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 13:39:45 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,11 @@ int				main(int ac, char **av)
 	init(&e);
 	while (42)
 	{
-		refresh_win(&e, 42);
+		if (!refresh_win(&e, 42))
+			continue ;
 		key = get_key();
-		if ((key != KEY_DOWN && key != KEY_RIGHT &&					\
-			key != KEY_UP && key != KEY_LEFT) || !check_size(&e))
+		if ((key != KEY_DOWN && key != KEY_RIGHT && \
+			key != KEY_UP && key != KEY_LEFT))
 			continue ;
 		make_ur_move(&e, key);
 		pop_rand_num(&e, two_or_four());

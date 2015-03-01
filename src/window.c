@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/01 09:16:56 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 13:02:57 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 13:46:19 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void		print_nb(int nb, WINDOW *win)
 
 	if (nb == EMPTY)
 		return ;
+	nb += 1000;
 	tmp = nb;
 	size = 1;
 	while (tmp /= 10)
@@ -89,36 +90,31 @@ static void		clear_win(t_env *e)
 		error(DELWIN, NULL);
 }
 
-void			refresh_win(t_env *e, char clear)
+int				refresh_win(t_env *e, char clear)
 {
 	int		i;
 	int		j;
 	int		stop_i_j[2];
 	int		start;
 
-	if (!check_size(e))
-	{
-		clear();
-		printw("Window is too small. Resize to keep playing!\n");
-		refresh();
-	}
-	clear ? clear_win(e) : NULL;
-	clear();
 	stop_i_j[0] = COLS - (COLS % e->grid_size);
 	stop_i_j[1] = LINES - (LINES % e->grid_size) - 1;
 	start = (COLS - (e->grid_size) * (stop_i_j[0] / e->grid_size - 1)) / 2;
-	i = -1;
+	if (!check_size(stop_i_j[1] / e->grid_size,\
+					stop_i_j[0] / e->grid_size) && clear)
+	{
+		clear(), printw("Window's too small..."), refresh();
+		return (0);
+	}
+	clear ? clear_win(e) : NULL, clear(), i = -1;
 	if (!(e->win_score = newwin(3, stop_i_j[0] - 4, LINES - 3, 2)))
 		error(NEW_WIN, NULL);
-	while (++i < e->grid_size)
-	{
-		j = -1;
+	while (j = -1, ++i < e->grid_size)
 		while (++j < e->grid_size)
 			if (!(e->win[i][j] = newwin(stop_i_j[1] / e->grid_size,\
 		stop_i_j[0] / e->grid_size, j * (stop_i_j[1] / e->grid_size - 1),\
 		start + i * (stop_i_j[0] / e->grid_size - 1))))
 				error(NEW_WIN, NULL);
-	}
-	refresh();
-	draw_win(e);
+	refresh(), draw_win(e);
+	return (1);
 }

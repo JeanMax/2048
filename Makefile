@@ -11,8 +11,10 @@
 #******************************************************************************#
 
 NAME =	game_2048
-C_SRC = main.c error.c signal.c get_key.c rand.c window.c algo.c highscore.c \
-		check_size.c check_enum.c
+C_SRC = main.c error.c signal.c get_key.c rand.c window.c highscore.c \
+		check_size.c check_enum.c two_or_four.c pop_rand_num.c mv_up.c \
+		mv_down.c mv_gauche.c mv_droite.c make_ur_move.c is_tab_full.c \
+		game_over.c
 I_DIR = -I./inc/
 O_DIR =	obj
 VPATH =	src

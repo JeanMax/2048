@@ -86,5 +86,9 @@ void			check_enum(size_t j);
 void			error(char error, char *msg);
 void			sig_init(void);
 int				get_key(void);
+void			move_up(t_env *e);
+void			move_down(t_env *e);
+void			move_right(t_env *e);
+void			move_left(t_env *e);
 
 #endif

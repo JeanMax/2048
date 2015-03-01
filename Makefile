@@ -6,7 +6,7 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2015/03/01 16:32:45 by mcanal           ###   ########.fr        #
+#    Updated: 2015/03/01 19:24:14 by mcanal           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -14,7 +14,7 @@ NAME =	game_2048
 C_SRC = main.c error.c signal.c get_key.c rand.c window.c highscore.c \
 		check_size.c check_enum.c two_or_four.c pop_rand_num.c mv_up.c \
 		mv_down.c mv_gauche.c mv_droite.c make_ur_move.c is_tab_full.c \
-		game_over.c
+		game_over.c is_won.c
 I_DIR = -I./inc/
 O_DIR =	obj
 VPATH =	src

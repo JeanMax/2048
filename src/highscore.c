@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/01 15:36:39 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 16:05:45 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 19:15:41 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void		put_it(t_env *e, int fd)
 	ft_putendl_fd("", fd);
 }
 
-void			highscore(t_env *e)
+void			score(t_env *e)
 {
 	int			fd;
 	char		*previous;

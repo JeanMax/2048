@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 04:50:46 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 16:23:59 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 19:25:47 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,29 +121,27 @@ static void		init(t_env *e)
 
 int				main(int ac, char **av)
 {
-	t_env		e;
-	int			key;
+	t_env	e;
+	int		key;
+	char	win;
 
-	ac > 2 ? error(USAGE, av[0]) : NULL;
+	ac > 2 ? error(USAGE, av[0]) : NULL, win = 0;
 	e.player = ft_strdup(ac == 1 ? "Anonymous" : av[1]), init(&e);
-	while (42)
+	while (!game_over(&e))
 	{
 		if (!refresh_win(&e, 42))
 			continue ;
+		if (!win && is_won(&e))
+			clear(), mvprintw(LINES / 2, COLS / 2 - 8, ":) You Won (:"), \
+				refresh(), win = 1, get_key();
 		key = get_key();
-		if ((key != KEY_DOWN && key != KEY_RIGHT && \
-			key != KEY_UP && key != KEY_LEFT))
+		if (key <= KEY_DOWN && key >= KEY_RIGHT && key != KEY_P)
 			continue ;
-		if (game_over(&e) || is_tab_full(&e) == WIN_VALUE)
-			break ;
 		make_ur_move(&e, key);
 	}
-	clear();
-	mvprintw(LINES / 2, COLS / 2 - 8, is_tab_full(&e) == WIN_VALUE ? \
-		":) You Won (:" : ">< Game Over ><");
+	clear(), mvprintw(LINES / 2, COLS / 2 - 8, ">< Game Over ><"), score(&e);
 	mvprintw(LINES / 2 + 2, COLS / 2 - 6, "Score: %d", e.score), refresh();
-	highscore(&e);
 	while ((key = get_key()) != KEY_ESC)
 		;
-	return (ft_freestab((void *)e.num),	ft_freestab((void *)e.win), 0);
+	return (ft_freestab((void *)e.num), ft_freestab((void *)e.win), 0);
 }

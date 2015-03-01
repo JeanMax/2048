@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 05:02:37 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 16:17:44 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 19:24:27 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # define HEADER_H
 # define EMPTY 1
 # define KEY_ESC 27
+# define KEY_P 112
+# define KEY_N 110
 # define USAGE_MSG " [player name]."
 # define USAGE 1
 # define MALLOC 2
@@ -52,7 +54,7 @@
 */
 enum			e_const
 {
-	WIN_VALUE = 2048
+	WIN_VALUE = 8
 };
 
 /*
@@ -74,7 +76,8 @@ struct			s_env
 ** prototypes
 */
 int				is_tab_full(t_env *e);
-void			highscore(t_env *e);
+int				is_won(t_env *e);
+void			score(t_env *e);
 int				game_over(t_env *e);
 int				refresh_win(t_env *e, char clear);
 int				two_or_four(void);

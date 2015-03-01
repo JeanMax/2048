@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 05:02:37 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 14:54:19 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 16:17:44 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define HEADER_H
 # define EMPTY 1
 # define KEY_ESC 27
-# define USAGE_MSG "."
+# define USAGE_MSG " [player name]."
 # define USAGE 1
 # define MALLOC 2
 # define BUS 3
@@ -42,7 +42,10 @@
 # include <signal.h>
 # include <curses.h>
 # include <sys/time.h>
+# include <sys/types.h>
+# include <sys/uio.h>
 # include <time.h>
+# include <fcntl.h>
 
 /*
 ** enum
@@ -63,11 +66,15 @@ struct			s_env
 	int		score;
 	int		**num;
 	int		grid_size;
+	char	*player;
+	int		move;
 };
 
 /*
 ** prototypes
 */
+int				is_tab_full(t_env *e);
+void			highscore(t_env *e);
 int				game_over(t_env *e);
 int				refresh_win(t_env *e, char clear);
 int				two_or_four(void);

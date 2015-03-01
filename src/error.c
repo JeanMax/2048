@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 19:39:48 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 14:54:55 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 16:32:56 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,6 @@
 */
 
 #include "header.h"
-
-int			check_size(int y, int x)
-{
-	if (y < 3 || x < 6)
-		return (0);
-	return (1);
-}
-
-void		check_enum(size_t j)
-{
-	size_t		i;
-
-	i = 2;
-	while (i < j && i < 3000000000)
-		i *= 2;
-	if (i != j)
-		error(ENUM, NULL);
-	if (i == 2147483648)
-	{
-		i = 1;
-		while (i < 20000000)
-		{
-			i *= 2;
-			i /= 2;
-			i++;
-		}
-	}
-}
 
 static void	aux_error(char error, char *msg)
 {

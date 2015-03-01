@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 04:50:46 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 15:26:13 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 16:23:59 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ static void		init(t_env *e)
 	if (has_colors() == FALSE)
 		error(COLOR, NULL);
 	start_color();
-	init_color(COLOR_BLUE, 956, 529, 529); //rouge
-	init_color(COLOR_MAGENTA, 1000, 974, 533); //jaune
-	init_color(COLOR_CYAN, 416, 965, 686); //vert
+	init_color(COLOR_BLUE, 956, 529, 529);
+	init_color(COLOR_MAGENTA, 1000, 974, 533);
+	init_color(COLOR_CYAN, 416, 965, 686);
 	init_pair(1, COLOR_BLACK, COLOR_RED);
 	init_pair(2, COLOR_BLACK, COLOR_YELLOW);
 	init_pair(3, COLOR_BLACK, COLOR_GREEN);
@@ -116,8 +116,7 @@ static void		init(t_env *e)
 	e->num = init_num_tab(e->grid_size);
 	e->win = init_win_tab(e->grid_size);
 	refresh_win(e, 0);
-	pop_rand_num(e, 2, 5);
-	pop_rand_num(e, two_or_four(), 4);
+	pop_rand_num(e, 2, 5), pop_rand_num(e, two_or_four(), 4);
 }
 
 int				main(int ac, char **av)
@@ -125,8 +124,8 @@ int				main(int ac, char **av)
 	t_env		e;
 	int			key;
 
-	ac != 1 ? error(USAGE, av[0]) : NULL;
-	init(&e);
+	ac > 2 ? error(USAGE, av[0]) : NULL;
+	e.player = ft_strdup(ac == 1 ? "Anonymous" : av[1]), init(&e);
 	while (42)
 	{
 		if (!refresh_win(&e, 42))
@@ -135,13 +134,16 @@ int				main(int ac, char **av)
 		if ((key != KEY_DOWN && key != KEY_RIGHT && \
 			key != KEY_UP && key != KEY_LEFT))
 			continue ;
-		if (game_over(&e))
-			break;
+		if (game_over(&e) || is_tab_full(&e) == WIN_VALUE)
+			break ;
 		make_ur_move(&e, key);
 	}
-	clear(), mvprintw(LINES / 2, COLS / 2 - 8,  ">< Game Over ><"), refresh();
-	get_key();
-	ft_freestab((void *)e.num); //won't happen, but swag
-	endwin();
-	return (0);
+	clear();
+	mvprintw(LINES / 2, COLS / 2 - 8, is_tab_full(&e) == WIN_VALUE ? \
+		":) You Won (:" : ">< Game Over ><");
+	mvprintw(LINES / 2 + 2, COLS / 2 - 6, "Score: %d", e.score), refresh();
+	highscore(&e);
+	while ((key = get_key()) != KEY_ESC)
+		;
+	return (ft_freestab((void *)e.num),	ft_freestab((void *)e.win), 0);
 }

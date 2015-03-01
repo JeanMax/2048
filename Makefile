@@ -6,12 +6,13 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2015/03/01 09:40:19 by mcanal           ###   ########.fr        #
+#    Updated: 2015/03/01 16:32:45 by mcanal           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME =	game_2048
-C_SRC = main.c error.c signal.c get_key.c rand.c window.c algo.c
+C_SRC = main.c error.c signal.c get_key.c rand.c window.c algo.c highscore.c \
+		check_size.c check_enum.c
 I_DIR = -I./inc/
 O_DIR =	obj
 VPATH =	src

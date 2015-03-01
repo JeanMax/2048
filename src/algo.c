@@ -6,7 +6,7 @@
 /*   By: tpayet <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/01 09:17:31 by tpayet            #+#    #+#             */
-/*   Updated: 2015/03/01 12:36:55 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 14:25:31 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static void		bourre_a_gauche(int *line, int size)
 	while (n < size)
 	{
 		j = 0;
-		while (line[j])
+		while (line[j + 1] != 0)
 		{
-			if (line[j] == EMPTY && line[j + 1] != 0)
+			if (line[j] == EMPTY && line[j + 1] != EMPTY)
 			{
 				line[j] = line[j + 1];
 				line[j + 1] = EMPTY;
@@ -41,23 +41,17 @@ static void		bourre_a_gauche(int *line, int size)
 static void		add_a_gauche(int *line, t_env *e)
 {
 	int		j;
-	int		n;
 
-	n = 0;
-	while (n < e->grid_size)
+	j = 0;
+	while (line[j + 1] <= e->grid_size)
 	{
-		j = 0;
-		while (line[j + 1] != 0)
+		if (line[j] == line[j + 1] && line[j] % 2 == 0)
 		{
-			if (line[j] == line[j + 1] && line[j] % 2 == 0)
-			{
-				line[j] *= 2;
-				e->score += line[j];
-				line[j + 1] = EMPTY;
-			}
-			j++;
+			line[j] *= 2;
+			e->score += line[j];
+			line[j + 1] = EMPTY;
 		}
-		n++;
+		j++;
 	}
 	bourre_a_gauche(line, e->grid_size);
 }
@@ -133,10 +127,10 @@ static void		bourre_en_haut(int i, t_env *e)
 	int		j;
 	int		n;
 
-	j = 0;
 	n = 0;
-	while (n < e->grid_size)
+	while (n <= e->grid_size)
 	{
+		j = 0;
 		while (e->num[j + 1])
 		{
 			if (e->num[j][i] == EMPTY && e->num[j + 1][i] != EMPTY)
@@ -271,6 +265,45 @@ void			pop_rand_num(t_env *e, int n)
 	e->num[j][i] = n;
 }
 
+int			is_tab_full(t_env *e)
+{
+	int		i;
+	int		j;
+
+	j = 0;
+	while (e->num[j])
+	{
+		i = 0;
+		while (e->num[j][i])
+		{
+			if (e->num[j][i] == EMPTY)
+				return (0);
+			i++;
+		}
+		j++;
+	}
+	return (1);
+}
+
+int				game_over(t_env *e)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (e->num[i + 1])
+	{
+		j = 0;
+		while (e->num[i][j + 1])
+		{
+			if (e->num[i][j] == e->num[i][j + 1] || e->num[i][j] == e->num[i + 1][j])
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 void			make_ur_move(t_env *e, int key)
 {
 	if (key == KEY_UP)
@@ -281,4 +314,6 @@ void			make_ur_move(t_env *e, int key)
 		move_left(e);
 	else if (key == KEY_RIGHT)
 		move_right(e);
+	if (!is_tab_full(e))
+		pop_rand_num(e, two_or_four());
 }

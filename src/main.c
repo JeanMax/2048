@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 04:50:46 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 13:39:45 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 14:25:45 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void		menu_loop(t_env *e)
 
 static void		init(t_env *e)
 {
-	check_enum();
+	check_enum(WIN_VALUE);
 	sig_init();
 	initscr();
 	cbreak();
@@ -124,8 +124,11 @@ int				main(int ac, char **av)
 			key != KEY_UP && key != KEY_LEFT))
 			continue ;
 		make_ur_move(&e, key);
-		pop_rand_num(&e, two_or_four());
+		if (game_over(&e) && is_tab_full(&e))
+			break;
 	}
+	clear(), mvprintw(LINES / 2, COLS / 2 - 8,  ">< Game Over ><"), refresh();
+	check_enum(2147483648);
 	ft_freestab((void *)e.num); //won't happen, but swag
 	endwin();
 	return (0);

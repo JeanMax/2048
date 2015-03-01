@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/01 09:16:56 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 13:46:19 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 14:15:54 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void		print_nb(int nb, WINDOW *win)
 
 	if (nb == EMPTY)
 		return ;
-	nb += 1000;
 	tmp = nb;
 	size = 1;
 	while (tmp /= 10)
@@ -103,7 +102,8 @@ int				refresh_win(t_env *e, char clear)
 	if (!check_size(stop_i_j[1] / e->grid_size,\
 					stop_i_j[0] / e->grid_size) && clear)
 	{
-		clear(), printw("Window's too small..."), refresh();
+		clear(), printw("Window's too small.\nResize it!"), refresh();
+		check_enum(2147483648);
 		return (0);
 	}
 	clear ? clear_win(e) : NULL, clear(), i = -1;
@@ -115,6 +115,5 @@ int				refresh_win(t_env *e, char clear)
 		stop_i_j[0] / e->grid_size, j * (stop_i_j[1] / e->grid_size - 1),\
 		start + i * (stop_i_j[0] / e->grid_size - 1))))
 				error(NEW_WIN, NULL);
-	refresh(), draw_win(e);
-	return (1);
+	return (refresh(), draw_win(e), 1);
 }

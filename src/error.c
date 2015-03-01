@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 19:39:48 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 13:38:13 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 14:14:34 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,25 @@ int			check_size(int y, int x)
 	return (1);
 }
 
-void		check_enum(void)
+void		check_enum(size_t j)
 {
-	int		i;
+	size_t		i;
 
 	i = 2;
-	while (i < WIN_VALUE)
+	while (i < j && i < 3000000000)
 		i *= 2;
-	if (i != WIN_VALUE)
+	if (i != j)
 		error(ENUM, NULL);
+	if (i == 2147483648)
+	{
+		i = 1;
+		while (i < 20000000)
+		{
+			i *= 2;
+			i /= 2;
+			i++;
+		}
+	}
 }
 
 static void	aux_error(char error, char *msg)

@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 05:02:37 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/28 22:04:06 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 09:39:46 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 ** define
 */
 # define HEADER_H
-# define SIZE_X 4 //size of the grid, it would better to ask for these at the begining
-# define SIZE_Y 4 //idem
 # define EMPTY 1
 # define KEY_ESC 27
 # define USAGE_MSG "."
@@ -32,15 +30,6 @@
 # define WBORDER 9
 # define WREFR 10
 # define DELWIN 11
-# define RED "\033[30;01m1"
-# define GREEN "\033[30;01m2"
-# define YELLOW "\033[30;01m3"
-# define BLUE "\033[30;01m4"
-# define PURPLE "\033[30;01m5"
-# define CYAN "\033[30;01m6"
-# define WHITE "\033[30;01m7" //bolded one!
-# define NOCOLOR "033[0m"
-# define DEBUG { ft_putstr_clr(__func__, "r"); ft_putstr_clr(" (", "r"); ft_putstr_clr(__FILE__, "red"); ft_putstr_clr(") - line: ", "r"); ft_putnbr_clr(__LINE__, "r"); ft_putendl(""); } //debug
 
 /*
 ** include
@@ -51,6 +40,7 @@
 # include <signal.h>
 # include <curses.h>
 # include <sys/time.h>
+# include <time.h>
 
 /*
 ** enum
@@ -66,17 +56,20 @@ enum e_const
 typedef struct s_env	t_env;
 struct		s_env
 {
-	WINDOW	***win; //window point from curses
-	int		**num; //just the numbers on screen
-	int		**old_num; //just the previous numbers on screen
-	int		grid_size;
+	WINDOW	***win;
 	WINDOW	*win_score;
 	int		score;
+	int		**num;
+	int		grid_size;
 };
 
 /*
 ** prototypes
 */
+void			refresh_win(t_env *e, char clear);
+int				two_or_four(void);
+void			pop_rand_num(t_env *e, int n);
+void			make_ur_move(t_env *e, int key);
 int				rand_a_b(int a, int b, int seed);
 void			error(char error, char *msg);
 void			sig_init(void);

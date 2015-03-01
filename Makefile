@@ -6,12 +6,13 @@
 #    By: mcanal <mcanal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/29 13:16:03 by mcanal            #+#    #+#              #
-#    Updated: 2015/02/28 22:03:12 by mcanal           ###   ########.fr        #
+#    Updated: 2015/03/01 09:40:19 by mcanal           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME =	game_2048
-C_SRC = main.c error.c signal.c get_key.c rand.c
+C_SRC = main.c error.c signal.c get_key.c rand.c window.c algo.c
+I_DIR = -I./inc/
 O_DIR =	obj
 VPATH =	src
 SRCC = 	$(C_SRC:%.c=src/%.c)
@@ -20,7 +21,8 @@ LIB =	libft/libft.a
 INC =	inc/header.h
 CC =	gcc
 RM =	rm -f
-CFLAGS = -lncurses -Wall -Werror -Wextra -I./inc/
+CFLAGS = -Wall -Werror -Wextra
+CURSES = -lncurses
 
 .PHONY: all lib soft clean fclean zclean re brute
 
@@ -29,15 +31,15 @@ all:
 	@$(MAKE) $(NAME)
 
 $(NAME): $(SRCO) $(LIB) $(INC)
-	$(CC) $(CFLAGS) $(SRCO) $(LIB) -o $@
+	$(CC) $(CFLAGS) $(I_DIR) $(SRCO) $(LIB) -o $@ $(CURSES)
 
 $(O_DIR)/%.o: %.c
 	@$(RM) $(NAME)
-	$(CC) $(CFLAGS) -c $^ -o $@
+	$(CC) $(CFLAGS) $(I_DIR) -c $^ -o $@ $(CURSES)
 
 soft:
 	@$(RM) $(NAME)
-	@$(CC) -lncurses -I./inc/ $(SRCC) $(LIB) -o $(NAME)
+	@$(CC) $(I_DIR) $(SRCC) $(LIB) -o $(NAME) $(CURSES) 
 
 clean:
 	@$(RM) $(SRCO)

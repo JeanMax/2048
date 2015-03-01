@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 05:02:37 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 09:39:46 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 12:53:46 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define WBORDER 9
 # define WREFR 10
 # define DELWIN 11
+# define ENUM 12
 
 /*
 ** include
@@ -45,16 +46,16 @@
 /*
 ** enum
 */
-enum e_const
+enum			e_const
 {
-	WIN_VALUE = 2048 //???
+	WIN_VALUE = 2048
 };
 
 /*
 ** struct && typedef
 */
 typedef struct s_env	t_env;
-struct		s_env
+struct			s_env
 {
 	WINDOW	***win;
 	WINDOW	*win_score;
@@ -71,6 +72,8 @@ int				two_or_four(void);
 void			pop_rand_num(t_env *e, int n);
 void			make_ur_move(t_env *e, int key);
 int				rand_a_b(int a, int b, int seed);
+int				check_size(t_env *e);
+void			check_enum(void);
 void			error(char error, char *msg);
 void			sig_init(void);
 int				get_key(void);

@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 05:38:21 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/28 08:51:30 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 12:30:47 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int				get_key(void)
 	int			key;
 
 	if ((key = getch()) == ERR)
-		return (0); // user hasn't responded
+		return (0);
 	else if (key == KEY_ESC)
 		endwin(), exit(0); //exit allowed?
 	return (key);

@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 19:39:48 by mcanal            #+#    #+#             */
-/*   Updated: 2015/02/28 19:33:05 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 12:57:34 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,37 @@
 */
 
 #include "header.h"
+
+int			check_size(t_env *e)
+{
+	int		x;
+	int		y;
+	
+	getmaxyx(e->win[0][0], y, x);
+	if (y < 3 || x < 7)
+		return (0);
+	return (1);
+}
+
+void		check_enum(void)
+{
+	int		i;
+
+	i = 2;
+	while (i < WIN_VALUE)
+		i *= 2;
+	if (i != WIN_VALUE)
+		error(ENUM, NULL);
+}
+
+static void	aux_error(char error, char *msg)
+{
+	if (error == DELWIN)
+		failn("Delwin failed.");
+	else if (error == ENUM)
+		failn("Invalid WIN_VALUE.");
+	msg = msg;
+}
 
 void		error(char error, char *msg)
 {
@@ -39,7 +70,7 @@ void		error(char error, char *msg)
 		failn("Wborder failed.");
 	else if (error == WREFR)
 		failn("Wrefresh failed.");
-	else if (error == DELWIN)
-		failn("Delwin failed.");
+	else
+		aux_error(error, msg);
 	exit(-1);
 }

@@ -6,7 +6,7 @@
 /*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/28 04:50:46 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 09:43:50 by mcanal           ###   ########.fr       */
+/*   Updated: 2015/03/01 12:57:10 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ static int		**init_num_tab(int grid_size)
 	{
 		j = 0;
 		while (j < grid_size)
-			tab[i][j++] = EMPTY; //filled with '1' if it's not a num we'll print
-		tab[i][grid_size] = 0; //segfault preventing
+			tab[i][j++] = EMPTY;
+		tab[i][grid_size] = 0;
 		i++;
 	}
-	tab[grid_size] = NULL;	//segfault preventing
+	tab[grid_size] = NULL;
 	return (tab);
 }
 
@@ -61,10 +61,10 @@ static WINDOW	***init_win_tab(int grid_size)
 	i = 0;
 	while (i < grid_size)
 	{
-		tab[i][grid_size] = NULL; //segfault preventing
+		tab[i][grid_size] = NULL;
 		i++;
 	}
-	tab[grid_size] = NULL;	//segfault preventing
+	tab[grid_size] = NULL;
 	return (tab);
 }
 
@@ -92,11 +92,12 @@ static void		menu_loop(t_env *e)
 
 static void		init(t_env *e)
 {
+	check_enum();
 	sig_init();
 	initscr();
-	cbreak(); //one char at a time
-	keypad(stdscr, TRUE); // keyboard mapping
-	noecho(); //suppress the automatic echoing of typed characters
+	cbreak();
+	keypad(stdscr, TRUE);
+	noecho();
 	e->score = 0;
 	menu_loop(e);
 	e->win_score = malloc(sizeof(WINDOW *));
@@ -118,8 +119,8 @@ int				main(int ac, char **av)
 	{
 		refresh_win(&e, 42);
 		key = get_key();
-		if (key != KEY_DOWN && key != KEY_RIGHT && \
-			key != KEY_UP && key != KEY_LEFT)
+		if ((key != KEY_DOWN && key != KEY_RIGHT &&					\
+			key != KEY_UP && key != KEY_LEFT) || !check_size(&e))
 			continue ;
 		make_ur_move(&e, key);
 		pop_rand_num(&e, two_or_four());

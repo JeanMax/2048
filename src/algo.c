@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcanal <zboub@42.fr>                       +#+  +:+       +#+        */
+/*   By: tpayet <zboub@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/01 09:17:31 by mcanal            #+#    #+#             */
-/*   Updated: 2015/03/01 09:26:32 by mcanal           ###   ########.fr       */
+/*   Created: 2015/03/01 09:17:31 by tpayet            #+#    #+#             */
+/*   Updated: 2015/03/01 12:36:55 by mcanal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 
 #include "header.h"
 
-static void	bourre_a_gauche(int *line, int size)
+static void		bourre_a_gauche(int *line, int size)
 {
-	int		 j;
-	int		 n;
+	int		j;
+	int		n;
 
 	n = 0;
 	while (n < size)
@@ -38,10 +38,10 @@ static void	bourre_a_gauche(int *line, int size)
 	}
 }
 
-static void	add_a_gauche(int *line, t_env *e)
+static void		add_a_gauche(int *line, t_env *e)
 {
-	int		 j;
-	int		 n;
+	int		j;
+	int		n;
 
 	n = 0;
 	while (n < e->grid_size)
@@ -62,7 +62,7 @@ static void	add_a_gauche(int *line, t_env *e)
 	bourre_a_gauche(line, e->grid_size);
 }
 
-static void	move_left(t_env *e)
+static void		move_left(t_env *e)
 {
 	int		i;
 
@@ -75,10 +75,10 @@ static void	move_left(t_env *e)
 	}
 }
 
-static void	bourre_a_droite(int *line, int size)
+static void		bourre_a_droite(int *line, int size)
 {
-	int		 i;
-	int		 n;
+	int		i;
+	int		n;
 
 	n = 0;
 	while (n < size)
@@ -86,7 +86,7 @@ static void	bourre_a_droite(int *line, int size)
 		i = size - 1;
 		while (i - 1 >= 0)
 		{
-			if (line[i] == EMPTY && line [i - 1] != EMPTY)
+			if (line[i] == EMPTY && line[i - 1] != EMPTY)
 			{
 				line[i] = line[i - 1];
 				line[i - 1] = EMPTY;
@@ -97,9 +97,9 @@ static void	bourre_a_droite(int *line, int size)
 	}
 }
 
-static void	add_a_droite(int *line, t_env *e)
+static void		add_a_droite(int *line, t_env *e)
 {
-	int		 i;
+	int		i;
 
 	i = e->grid_size - 1;
 	while (i - 1 >= 0)
@@ -111,14 +111,13 @@ static void	add_a_droite(int *line, t_env *e)
 			line[i - 1] = EMPTY;
 		}
 		i--;
-
 	}
 	bourre_a_droite(line, e->grid_size);
 }
 
-static void	move_right(t_env *e)
+static void		move_right(t_env *e)
 {
-	int		 i;
+	int			i;
 
 	i = 0;
 	while (e->num[i])
@@ -129,7 +128,7 @@ static void	move_right(t_env *e)
 	}
 }
 
-static void	bourre_en_haut(int i, t_env *e)
+static void		bourre_en_haut(int i, t_env *e)
 {
 	int		j;
 	int		n;
@@ -151,7 +150,7 @@ static void	bourre_en_haut(int i, t_env *e)
 	}
 }
 
-static void	add_en_haut(int i, t_env *e)
+static void		add_en_haut(int i, t_env *e)
 {
 	int		j;
 
@@ -169,9 +168,9 @@ static void	add_en_haut(int i, t_env *e)
 	bourre_en_haut(i, e);
 }
 
-static void	move_up(t_env *e)
+static void		move_up(t_env *e)
 {
-	int		 i;
+	int		i;
 
 	i = 0;
 	while (i < e->grid_size)
@@ -182,15 +181,15 @@ static void	move_up(t_env *e)
 	}
 }
 
-static void	bourre_en_bas(int i, t_env *e)
+static void		bourre_en_bas(int i, t_env *e)
 {
-	int		 j;
-	int		 n;
+	int		j;
+	int		n;
 
 	n = 0;
 	while (n < e->grid_size)
 	{
-		j = e->grid_size -1;
+		j = e->grid_size - 1;
 		while (j - 1 >= 0)
 		{
 			if (e->num[j][i] == EMPTY && e->num[j - 1][i] != EMPTY)
@@ -204,9 +203,9 @@ static void	bourre_en_bas(int i, t_env *e)
 	}
 }
 
-static void	add_en_bas(int i, t_env *e)
+static void		add_en_bas(int i, t_env *e)
 {
-	int		 j;
+	int		j;
 
 	j = e->grid_size - 1;
 	while (j - 1 >= 0)
@@ -222,7 +221,7 @@ static void	add_en_bas(int i, t_env *e)
 	bourre_en_bas(i, e);
 }
 
-static void	move_down(t_env *e)
+static void		move_down(t_env *e)
 {
 	int		i;
 
@@ -235,7 +234,7 @@ static void	move_down(t_env *e)
 	}
 }
 
-int		two_or_four(void)
+int				two_or_four(void)
 {
 	int		i;
 
@@ -245,16 +244,16 @@ int		two_or_four(void)
 	return (i);
 }
 
-void	pop_rand_num(t_env *e, int n)
+void			pop_rand_num(t_env *e, int n)
 {
-	unsigned int k;
-	int		i;
-	int		j;
+	unsigned int	k;
+	int				i;
+	int				j;
 
 	k = rand_a_b(1, ((e->grid_size) * (e->grid_size)) + 1, 974);
 	if ((i = ((k + e->grid_size) % e->grid_size) - 1) < 0)
 		i = 0;
-	j = ((k - 1)/ e->grid_size);
+	j = ((k - 1) / e->grid_size);
 	while (e->num[j][i] != EMPTY)
 	{
 		i++;
@@ -272,7 +271,7 @@ void	pop_rand_num(t_env *e, int n)
 	e->num[j][i] = n;
 }
 
-void	make_ur_move(t_env *e, int key)
+void			make_ur_move(t_env *e, int key)
 {
 	if (key == KEY_UP)
 		move_up(e);
